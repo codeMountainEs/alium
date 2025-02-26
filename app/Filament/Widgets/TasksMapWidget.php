@@ -81,8 +81,19 @@ class TasksMapWidget extends MapWidget
                         //'data' => $data['data'],
                     ]);
 
+                    if($presupuesto['latitud'] == null || $presupuesto['longitud'] == null){
+                        $coordinates = $this->geocodeAddress($direccionCompleta);
+                    }else{
+                        $coordinates = [
+                            'lat' => $presupuesto['latitud'],
+                            'lng' => $presupuesto['longitud'],
+                        ];
+                    }
 
-                    $coordinates = $this->geocodeAddress($direccionCompleta);
+                    Log::info('200 si ', [
+                        'coordinates' => $coordinates,
+                        'direccionCompleta' => $direccionCompleta,
+                    ]);
 
 
                     return [
