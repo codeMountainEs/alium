@@ -14,23 +14,23 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
-            $table->string('referencia')->unique();
+            $table->string('referencia')->nullable();
             $table->json('fotos')->nullable();
             $table->json('documentos')->nullable();
-            $table->decimal('precio', 10, 2);
-            $table->text('descripcion');
+            $table->decimal('precio', 10, 2)->nullable();
+            $table->text('descripcion')->nullable();
             $table->enum('estado', ['curso', 'finalizado', 'abierto'])->default('abierto');
-            $table->date('fecha_prevista');
+            $table->date('fecha_prevista')->nullable();
             $table->date('fecha_finalizado')->nullable();
-            $table->string('provincia');
-            $table->string('localidad');
-            $table->string('direccion');
-            $table->string('postal');
+            $table->string('provincia')->nullable();
+            $table->string('localidad')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('postal')->nullable();
             $table->string('pais')->default('España');
             $table->decimal('latitud', 10, 8)->nullable();
             $table->decimal('longitud', 11, 8)->nullable();
-            $table->string('telefono');
-            $table->string('email');
+            $table->string('telefono')->nullable();
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Task;
+use App\Models\Empresa;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +14,26 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
+        // Crear primera empresa si no existe
+        $empresa1 = Empresa::firstOrCreate(
+            ['nombre' => 'Empresa Principal'],
+            [
+                'email' => 'info@empresa.com',
+                'telefono' => '912345678'
+            ]
+        );
+
+        // Crear segunda empresa
+        $empresa2 = Empresa::firstOrCreate(
+            ['nombre' => 'Empresa Secundaria'],
+            [
+                'email' => 'info@empresa2.com',
+                'telefono' => '913456789'
+            ]
+        );
+
         $tasks = [
+            // Tareas para la primera empresa
             [
                 'titulo' => 'Reparación de Tejado',
                 'referencia' => 'REP-2025-001',
@@ -33,6 +53,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -3.6425841,
                 'telefono' => '634567890',
                 'email' => 'cliente1@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Instalación Aire Acondicionado',
@@ -53,6 +74,7 @@ class TaskSeeder extends Seeder
                 'longitud' => 2.1014742,
                 'telefono' => '612345678',
                 'email' => 'cliente2@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Pintura Interior Vivienda',
@@ -73,6 +95,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -0.4416741,
                 'telefono' => '654789123',
                 'email' => 'cliente3@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Reforma Baño Completo',
@@ -93,6 +116,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -5.9216657,
                 'telefono' => '678912345',
                 'email' => 'cliente4@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Instalación Paneles Solares',
@@ -113,6 +137,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -4.4989716,
                 'telefono' => '645123789',
                 'email' => 'cliente5@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Limpieza de Fachada',
@@ -133,6 +158,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -0.8809389,
                 'telefono' => '689234567',
                 'email' => 'cliente6@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Instalación Suelo Radiante',
@@ -153,6 +179,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -3.0134871,
                 'telefono' => '678234567',
                 'email' => 'cliente7@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Cambio Ventanas PVC',
@@ -173,6 +200,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -0.1224937,
                 'telefono' => '634567891',
                 'email' => 'cliente8@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Instalación Piscina',
@@ -193,6 +221,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -0.9835975,
                 'telefono' => '678912346',
                 'email' => 'cliente9@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Reforma Cocina',
@@ -213,6 +242,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -3.5981468,
                 'telefono' => '645789123',
                 'email' => 'cliente10@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Instalación Domótica',
@@ -233,6 +263,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -3.8196804,
                 'telefono' => '678234568',
                 'email' => 'cliente11@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Jardín Vertical',
@@ -253,6 +284,7 @@ class TaskSeeder extends Seeder
                 'longitud' => 2.0865982,
                 'telefono' => '634567892',
                 'email' => 'cliente12@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Impermeabilización Terraza',
@@ -273,6 +305,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -0.4654359,
                 'telefono' => '678912347',
                 'email' => 'cliente13@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Instalación Punto Recarga',
@@ -293,6 +326,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -5.9962034,
                 'telefono' => '645789124',
                 'email' => 'cliente14@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Cambio Caldera Gas',
@@ -313,6 +347,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -4.8861836,
                 'telefono' => '678234569',
                 'email' => 'cliente15@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Insonorización Local',
@@ -333,6 +368,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -0.8817521,
                 'telefono' => '634567893',
                 'email' => 'cliente16@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Reforma Escalera',
@@ -353,6 +389,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -2.9350039,
                 'telefono' => '678912348',
                 'email' => 'cliente17@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Instalación Pérgola',
@@ -373,6 +410,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -0.4906855,
                 'telefono' => '645789125',
                 'email' => 'cliente18@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Cambio Suelo Parquet',
@@ -393,6 +431,7 @@ class TaskSeeder extends Seeder
                 'longitud' => -1.1307897,
                 'telefono' => '678234570',
                 'email' => 'cliente19@email.com',
+                'empresa_id' => $empresa1->id,
             ],
             [
                 'titulo' => 'Instalación Toldo Motorizado',
@@ -413,7 +452,51 @@ class TaskSeeder extends Seeder
                 'longitud' => -3.5985571,
                 'telefono' => '634567894',
                 'email' => 'cliente20@email.com',
+                'empresa_id' => $empresa1->id,
             ],
+            // Tareas para la segunda empresa
+            [
+                'titulo' => 'Instalación Fibra Óptica',
+                'referencia' => 'FIB-2025-001',
+                'fotos' => ['fibra1.jpg', 'fibra2.jpg'],
+                'documentos' => ['contrato_fibra.pdf'],
+                'precio' => 1200.00,
+                'descripcion' => 'Instalación de fibra óptica en edificio de oficinas',
+                'estado' => 'curso',
+                'fecha_prevista' => '2025-03-20',
+                'fecha_finalizado' => null,
+                'provincia' => 'Barcelona',
+                'localidad' => 'Sant Cugat',
+                'direccion' => 'Avenida Empresarial 45',
+                'postal' => '08172',
+                'pais' => 'España',
+                'latitud' => 41.4720944,
+                'longitud' => 2.0865982,
+                'telefono' => '678123456',
+                'email' => 'oficinas@empresa2.com',
+                'empresa_id' => $empresa2->id,
+            ],
+            [
+                'titulo' => 'Mantenimiento Servidores',
+                'referencia' => 'SER-2025-002',
+                'fotos' => ['rack1.jpg', 'rack2.jpg'],
+                'documentos' => ['mantenimiento.pdf'],
+                'precio' => 3500.00,
+                'descripcion' => 'Mantenimiento mensual de servidores y red',
+                'estado' => 'abierto',
+                'fecha_prevista' => '2025-04-01',
+                'fecha_finalizado' => null,
+                'provincia' => 'Barcelona',
+                'localidad' => 'Barcelona',
+                'direccion' => 'Calle Tecnología 78',
+                'postal' => '08001',
+                'pais' => 'España',
+                'latitud' => 41.3851,
+                'longitud' => 2.1734,
+                'telefono' => '678123457',
+                'email' => 'it@empresa2.com',
+                'empresa_id' => $empresa2->id,
+            ]
         ];
 
         foreach ($tasks as $task) {

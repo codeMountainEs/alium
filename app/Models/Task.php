@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
@@ -29,6 +30,7 @@ class Task extends Model
         'telefono',
         'email',
         'location',
+        'empresa_id'
     ];
 
     protected $casts = [
@@ -75,9 +77,17 @@ class Task extends Model
         return 'location';
     }
 
+    public function empresa(): BelongsTo
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 
-
-
-
-
+    public function scopeFromEmpresa($query)
+    {
+        if (auth()->user()->is_admin) {
+            return $query;
+        }
+        
+        return $query->where('empresa_id', auth()->user()->empresa_id);
+    }
 }

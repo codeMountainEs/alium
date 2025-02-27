@@ -15,6 +15,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Hidden;
 
 class TaskResource extends Resource
 {
@@ -38,40 +43,40 @@ class TaskResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
+            Hidden::make('empresa_id')
+                ->default(fn () => auth()->user()->empresa_id),
             Tabs::make('Detalles de la Tarea')->tabs([
                 Tabs\Tab::make('Información Básica')
                     ->icon('heroicon-o-information-circle')
-                    ->schema([
+            ->schema([
                         Section::make()->schema([
                             Forms\Components\TextInput::make('titulo')
                                 ->required()
                                 ->maxLength(255)
                                 ->columnSpan('full'),
-                            Forms\Components\TextInput::make('referencia')
-                                ->required()
+                            Forms\Components\TextInput::make('referencia')                             
                                 ->unique(ignoreRecord: true)
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('empresa')
                                 ->maxLength(255),
                             Forms\Components\Select::make('estado')
                                 ->required()
-                                ->options([
-                                    'abierto' => 'Abierto',
-                                    'curso' => 'En Curso',
-                                    'finalizado' => 'Finalizado',
-                                ])
-                                ->default('abierto'),
+                            ->options([
+                                'abierto' => 'Abierto',
+                                'curso' => 'En Curso',
+                                'finalizado' => 'Finalizado',
+                            ])
+                            ->default('abierto'),
                             Forms\Components\DatePicker::make('fecha_prevista')
-                                ->required()
                                 ->native(false),
                             Forms\Components\DatePicker::make('fecha_finalizado')
                                 ->native(false)
                                 ->visible(fn (Forms\Get $get) => $get('estado') === 'finalizado'),
                             Forms\Components\TextInput::make('precio')
-                                ->required()
                                 ->numeric()
                                 ->prefix('€')
                                 ->maxValue(999999.99),
                             Forms\Components\RichEditor::make('descripcion')
-                                ->required()
                                 ->columnSpan('full'),
                         ])->columns(2),
                     ]),
@@ -98,18 +103,16 @@ class TaskResource extends Resource
                                         $set('longitud', $state['lng']);
                                     }
                                 }),
-                            Forms\Components\TextInput::make('provincia')
-                                ->required(),
-                            Forms\Components\TextInput::make('localidad')
-                                ->required(),
+                            Forms\Components\TextInput::make('provincia'),
+                            Forms\Components\TextInput::make('localidad'),
                             Forms\Components\TextInput::make('direccion')
-                                ->required()
+                                
                                 ->columnSpan('full'),
                             Forms\Components\TextInput::make('postal')
-                                ->required(),
+                                ,
                             Forms\Components\TextInput::make('pais')
-                                ->default('España')
-                                ->required(),
+                    ->default('España')
+                                ,
                             Forms\Components\TextInput::make('latitud')
                                 ->numeric()
                                 ->disabled(),
@@ -124,11 +127,11 @@ class TaskResource extends Resource
                     ->schema([
                         Section::make()->schema([
                             Forms\Components\TextInput::make('telefono')
-                                ->tel()
-                                ->required(),
+                    ->tel()
+                                ,
                             Forms\Components\TextInput::make('email')
-                                ->email()
-                                ->required(),
+                    ->email()
+                                ,
                         ])->columns(2),
                     ]),
 
@@ -150,7 +153,7 @@ class TaskResource extends Resource
                         ]),
                     ]),
             ])->columnSpanFull(),
-        ]);
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -188,9 +191,7 @@ class TaskResource extends Resource
                         'curso' => 'En Curso',
                         'finalizado' => 'Finalizado',
                     ]),
-                Tables\Filters\SelectFilter::make('provincia')
-                    ->options(fn () => Task::distinct()->pluck('provincia', 'provincia')->toArray()),
-            ])
+                   ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -217,5 +218,16 @@ class TaskResource extends Resource
             'edit' => Pages\EditTask::route('/{record}/edit'),
             'map' => Pages\MapTasks::route('/map'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (!auth()->user()->is_admin) {
+            $query->where('empresa_id', auth()->user()->empresa_id);
+        }
+
+        return $query;
     }
 }
