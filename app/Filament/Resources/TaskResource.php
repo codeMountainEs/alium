@@ -26,6 +26,8 @@ class TaskResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $label = 'Tareas';
+
     protected static ?string $recordTitleAttribute = 'titulo';
 
     public static function getNavigationBadge(): ?string
@@ -162,9 +164,7 @@ class TaskResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->wrap(),
-                Tables\Columns\TextColumn::make('precio')
-                    ->money('EUR')
-                    ->sortable(),
+              
                 Tables\Columns\BadgeColumn::make('estado')
                     ->colors([
                         'danger' => 'abierto',
@@ -178,12 +178,7 @@ class TaskResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('localidad')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('telefono')
-                    ->searchable()
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable()
-                    ->toggleable(),
+               
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

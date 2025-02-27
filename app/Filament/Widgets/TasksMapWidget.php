@@ -44,7 +44,7 @@ class TasksMapWidget extends MapWidget
     protected function getApiTasks(): array
     {
         try {
-            Log::info('Iniciando petición a la API');
+            Log::info('1 Iniciando petición a la API');
 
             $client = new \GuzzleHttp\Client();
             $response = $client->request('GET', 'http://rotuleon.rotuleon.net:8081/api/tasks', [
@@ -54,7 +54,7 @@ class TasksMapWidget extends MapWidget
             ]);
             //$coordinates = $this->generateRandomCoordinates();
 
-            Log::info('Respuesta de la API', [
+            Log::info('2 Respuesta de la API', [
                 //'coordinates' => $coordinates,
                 //'status' => $response->getStatusCode()===200,
                 //'body' => json_decode($response->getBody(), true)
@@ -65,35 +65,49 @@ class TasksMapWidget extends MapWidget
 
                 $data = json_decode($response->getBody(), true);
 
-               
+                Log::info('3 200 si collect', $data);
+
                 return collect($data['data'])->map(function ($presupuesto,$coordinates) {
 
-                    // Componemos la dirección completa
-                    $direccionCompleta = $this->formatearDireccion(
-                        $presupuesto['direccion'] ?? '',
-                        $presupuesto['codigo_postal'] ?? '',
-                        $presupuesto['poblacion'] ?? '',
-                        $presupuesto['provincia'] ?? ''
-                    );
-                    
-                    Log::info('200 si ', [
-                       'dataa' => $presupuesto
-                        //'data' => $data['data'],
-                    ]);
+                    Log::info('3 200 si collect if ', [
+                       
+                         //'data' => $data['data'],
+                     ]);
+                   
 
                     if($presupuesto['latitud'] == null || $presupuesto['longitud'] == null){
-                        $coordinates = $this->geocodeAddress($direccionCompleta);
+                        
+                        Log::info('4 200 si ', [
+                            '$presupuesto[latitud] == null' => $presupuesto
+                             //'data' => $data['data'],
+                         ]);
+                          // Componemos la dirección completa
+                            $direccionCompleta = $this->formatearDireccion(
+                                $presupuesto['direccion'] ?? '',
+                                $presupuesto['codigo_postal'] ?? '',
+                                $presupuesto['poblacion'] ?? '',
+                                $presupuesto['provincia'] ?? ''
+                            );
+                  
+                        //$coordinates = $this->geocodeAddress($direccionCompleta);
                     }else{
+
+                       $presupuesto['texto'] = htmlspecialchars($presupuesto['titulo']).'-'.
+                        htmlspecialchars($presupuesto['descripcion']);
+                        
+
                         $coordinates = [
-                            'lat' => $presupuesto['latitud'],
-                            'lng' => $presupuesto['longitud'],
+                            'lat' => floatval($presupuesto['latitud']),
+                            'lng' => floatval($presupuesto['longitud']),
                         ];
+                        Log::info('5 200 si ', [
+                            'coordinates' => $coordinates,
+                            'texto' => $presupuesto['texto'],
+                             //'data' => $data['data'],
+                         ]);
                     }
 
-                    Log::info('200 si ', [
-                        'coordinates' => $coordinates,
-                        'direccionCompleta' => $direccionCompleta,
-                    ]);
+                 
 
 
                     return [
@@ -102,8 +116,8 @@ class TasksMapWidget extends MapWidget
                         'lng' => $coordinates['lng'],
                       ],
                         'label' => 
-                        htmlspecialchars($presupuesto['titulo'])
-    
+                        htmlspecialchars($presupuesto['texto'])
+
                             
                         ,
                         'icon' => [
@@ -116,6 +130,11 @@ class TasksMapWidget extends MapWidget
                         ],
                     ];
                 })->toArray();
+
+                Log::info('6 200 si ', [
+                    'fin' => $data['data'],
+                    
+                ]);
             }
             
             return [];
