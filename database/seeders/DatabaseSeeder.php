@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Usuario admin
-        User::factory()->create([
+        User::create([
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => bcrypt('Admin_654*'),
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Usuario normal
-        User::factory()->create([
+        User::create([
             'name' => 'usuario',
             'email' => 'usuario@admin.com',
             'password' => bcrypt('password'),
