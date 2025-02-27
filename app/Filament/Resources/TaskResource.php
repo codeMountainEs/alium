@@ -37,7 +37,13 @@ class TaskResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        $query = static::getModel()::query();
+        
+        if (!auth()->user()->is_admin) {
+            $query->where('empresa_id', auth()->user()->empresa_id);
+        }
+        
+        return $query->count();
     }
 
     public static function form(Form $form): Form
@@ -50,6 +56,14 @@ class TaskResource extends Resource
                     ->icon('heroicon-o-information-circle')
             ->schema([
                         Section::make()->schema([
+                            Select::make('empresa_id')
+                            ->label('Empresa')
+                            ->relationship('empresa', 'nombre')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->visible(fn () => auth()->user()->is_admin),
+
                             Forms\Components\TextInput::make('titulo')
                                 ->required()
                                 ->maxLength(255)
@@ -160,6 +174,13 @@ class TaskResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('empresa.nombre')
+                ->label('Empresa')
+                ->searchable()
+                ->sortable()
+                ->toggleable()
+                ->visible(fn () => auth()->user()->is_admin),
+
                 Tables\Columns\TextColumn::make('referencia')
                     ->searchable()
                     ->sortable(),

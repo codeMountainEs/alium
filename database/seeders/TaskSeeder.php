@@ -16,18 +16,18 @@ class TaskSeeder extends Seeder
     {
         // Crear primera empresa si no existe
         $empresa1 = Empresa::firstOrCreate(
-            ['nombre' => 'Empresa Principal'],
+            ['nombre' => 'Rotuleon'],
             [
-                'email' => 'info@empresa.com',
+                'email' => 'rotuleon@alium.com',
                 'telefono' => '912345678'
             ]
         );
 
         // Crear segunda empresa
         $empresa2 = Empresa::firstOrCreate(
-            ['nombre' => 'Empresa Secundaria'],
+            ['nombre' => 'Barcelona'],
             [
-                'email' => 'info@empresa2.com',
+                'email' => 'barcelona@alium.com',
                 'telefono' => '913456789'
             ]
         );
